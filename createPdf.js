@@ -86,7 +86,7 @@ const createPdf = async (body, res) => {
       }
       .meal-heading {
         text-align: center;
-        line-height: 1;
+        line-height: 1.2;
         margin: 2rem 0 1rem;
       }
   
