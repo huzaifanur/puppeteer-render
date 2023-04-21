@@ -1,11 +1,12 @@
 const express = require("express");
-const { scrapeLogic } = require("./scrapeLogic");
+const { createPdf } = require("./createPdf");
 const app = express();
+app.use(express.json());
 
 const PORT = process.env.PORT || 4000;
 
-app.get("/scrape", (req, res) => {
-  scrapeLogic(res);
+app.post("/pdf", (req, res) => {
+  createPdf(req.body, res);
 });
 
 app.get("/", (req, res) => {
