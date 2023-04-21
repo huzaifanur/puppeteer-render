@@ -15,6 +15,7 @@ const createPdf = async (body, res) => {
       />
     </head>
     <style>
+  
       *,
       *::before,
       *::after {
@@ -47,6 +48,7 @@ const createPdf = async (body, res) => {
       .container {
         margin-inline: auto;
         display: flex;
+        height: 100vh;
       }
       .col > p {
         font-size: 1.2rem;
@@ -56,7 +58,8 @@ const createPdf = async (body, res) => {
         color: white;
         background-color: #264472;
         padding: 2rem;
-        height: 100vh;
+        height:1056px;
+        
       }
       .col-2 {
         flex-basis: 50%;
