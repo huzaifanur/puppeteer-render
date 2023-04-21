@@ -5,8 +5,7 @@ const createPdf = async (body, res) => {
   const { productName, ingredients, instructions } = body;
   let { productImg } = body;
   if (!productImg) {
-    productImg =
-      "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80";
+    productImg = "https://picsum.photos/300";
   }
   const html = `<!DOCTYPE html>
   <html lang="en">
@@ -148,9 +147,9 @@ const createPdf = async (body, res) => {
 
     // Generate the PDF and send it as a response
     const pdfBuffer = await page.pdf({ printBackground: true });
-    res.type("pdf");
     //res.contentType("application/pdf");
     //res.setHeader("Content-Disposition", "attachment; filename=resume.pdf");
+    res.type("pdf");
     res.send(pdfBuffer);
 
     // Close the browser
