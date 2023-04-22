@@ -49,7 +49,7 @@ async function createMultipagePdf(dataArr, res) {
 function getFilledTemplate(body) {
   const { productName, ingredients, instructions } = body;
   let { productImg } = body;
-  if (!productImg) {
+  if (1) {
     productImg = "https://picsum.photos/300";
   }
   const html = `<!DOCTYPE html>
