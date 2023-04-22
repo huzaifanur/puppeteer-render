@@ -3,40 +3,34 @@ require("dotenv").config();
 const PDFMerger = require("pdf-merger-js");
 
 async function createMultipagePdf(dataArr, res) {
-  const dymmy = {
-    productName: "",
-    ingredients: "",
-    instructions: "",
-    productImg: "https://picsum.photos/300",
-  };
-
-  const bodyArr = [...dataArr, dymmy];
-
-  const browser = await puppeteer.launch({
-    args: [
-      "--disable-setuid-sandbox",
-      "--no-sandbox",
-      "--single-process",
-      "--no-zygote",
-    ],
-    executablePath:
-      process.env.NODE_ENV === "production"
-        ? process.env.PUPPETEER_EXECUTABLE_PATH
-        : puppeteer.executablePath(),
-  });
   var merger = new PDFMerger();
+  const bodyArr = dataArr;
+  // browser launch
   try {
+    const browser = await puppeteer.launch({
+      args: [
+        "--disable-setuid-sandbox",
+        "--no-sandbox",
+        "--single-process",
+        "--no-zygote",
+      ],
+      executablePath:
+        process.env.NODE_ENV === "production"
+          ? process.env.PUPPETEER_EXECUTABLE_PATH
+          : puppeteer.executablePath(),
+    });
     const page = await browser.newPage();
+    await page.emulateMediaType("screen");
+    await page.setViewport({
+      width: 1200,
+      height: 800,
+      deviceScaleFactor: 2,
+    });
+
     for (let i = 0; i < bodyArr.length; i++) {
       const body = bodyArr[i];
       const html = getFilledTemplate(body);
       await page.setContent(html);
-      await page.emulateMediaType("screen");
-      await page.setViewport({
-        width: 1200,
-        height: 800,
-        deviceScaleFactor: 2,
-      });
       merger.add(await page.pdf({ printBackground: true }));
     }
     const mergedPdfBuffer = await merger.saveAsBuffer();

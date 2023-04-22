@@ -10,8 +10,6 @@ app.post("/pdf", (req, res) => {
   createPdf(req.body, res);
 });
 app.post("/multi", (req, res) => {
-  console.log(req.body.data);
-
   createMultipagePdf(req.body.data, res);
 });
 
