@@ -4,7 +4,7 @@ const PDFMerger = require("pdf-merger-js");
 
 async function createMultipagePdf(dataArr, res) {
   var merger = new PDFMerger();
-  const bodyArr = dataArr;
+  const bodyArr = [...dataArr, "this is just a hot fix"];
   // browser launch
   const browser = await puppeteer.launch({
     args: [
