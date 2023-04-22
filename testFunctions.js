@@ -32,8 +32,14 @@ async function createMultipagePdf(dataArr, res) {
       await page.setContent(html);
       // wait a sec
       await page.waitForTimeout(1000);
-
-      merger.add(await page.pdf({ printBackground: true, format: "LEGAL" }));
+      // Letter: 8.5in x 11in
+      merger.add(
+        await page.pdf({
+          printBackground: true,
+          height: "12in",
+          width: "9.5in",
+        })
+      );
     }
     const mergedPdfBuffer = await merger.saveAsBuffer();
     res.type("pdf");
@@ -48,7 +54,7 @@ async function createMultipagePdf(dataArr, res) {
 
 function getFilledTemplate(body) {
   const { productName, ingredients, instructions } = body;
-  let productImg = "";
+  let productImg = "https://picsum.photos/400";
 
   const html = `<!DOCTYPE html>
     <html lang="en">
@@ -83,7 +89,7 @@ function getFilledTemplate(body) {
         }
         img {
           object-fit: cover;
-          height: 400px;
+          width: 100%;
         }
         h2 {
           margin-bottom: 16px;
@@ -105,7 +111,7 @@ function getFilledTemplate(body) {
           color: white;
           background-color: #264472;
           padding: 2rem;
-          
+          height: 1152px;
           overflow: hidden;
           
         }
