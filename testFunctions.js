@@ -31,7 +31,7 @@ async function createMultipagePdf(dataArr, res) {
       const html = getFilledTemplate(body);
       await page.setContent(html);
       // wait a sec
-      await page.waitFor(1000);
+      await page.waitForTimeout(1000);
 
       merger.add(await page.pdf({ printBackground: true }));
     }
