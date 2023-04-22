@@ -26,13 +26,15 @@ async function createMultipagePdf(dataArr, res) {
       height: 800,
       deviceScaleFactor: 2,
     });
-
-    for (let i = 0; i < bodyArr.length; i++) {
-      const body = bodyArr[i];
+    const pdfPromises = bodyArr.map(async (body) => {
       const html = getFilledTemplate(body);
       await page.setContent(html);
-      merger.add(await page.pdf({ printBackground: true }));
-    }
+      return page.pdf({ printBackground: true });
+    });
+
+    const pdfs = await Promise.all(pdfPromises);
+    pdfs.forEach((pdf) => merger.add(pdf));
+
     const mergedPdfBuffer = await merger.saveAsBuffer();
     res.type("pdf");
     res.send(mergedPdfBuffer);
