@@ -33,7 +33,7 @@ async function createMultipagePdf(dataArr, res) {
       // wait a sec
       await page.waitForTimeout(1000);
 
-      merger.add(await page.pdf({ printBackground: true }));
+      merger.add(await page.pdf({ printBackground: true, format: "LEGAL" }));
     }
     const mergedPdfBuffer = await merger.saveAsBuffer();
     res.type("pdf");
@@ -105,7 +105,7 @@ function getFilledTemplate(body) {
           color: white;
           background-color: #264472;
           padding: 2rem;
-          height:1000px;
+          
           overflow: hidden;
           
         }
