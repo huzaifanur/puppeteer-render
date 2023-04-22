@@ -105,7 +105,7 @@ function getFilledTemplate(body) {
           color: white;
           background-color: #264472;
           padding: 2rem;
-          height:1056px;
+          height:1000px;
           
         }
         .col-2 {
