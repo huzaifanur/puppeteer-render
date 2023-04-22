@@ -9,8 +9,10 @@ const PORT = process.env.PORT || 4000;
 app.post("/pdf", (req, res) => {
   createPdf(req.body, res);
 });
-app.post("/muti-pdf", (req, res) => {
-  createMultipagePdf(req.body, res);
+app.post("/multi", (req, res) => {
+  console.log(req.body.data);
+
+  createMultipagePdf(req.body.data, res);
 });
 
 app.get("/", (req, res) => {

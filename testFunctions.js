@@ -2,8 +2,16 @@ const puppeteer = require("puppeteer");
 require("dotenv").config();
 const PDFMerger = require("pdf-merger-js");
 
-async function createMultipagePdf(bodyArr, res) {
-  bodyArr.push("padding");
+async function createMultipagePdf(dataArr, res) {
+  const dymmy = {
+    productName: "",
+    ingredients: "",
+    instructions: "",
+    productImg: "https://picsum.photos/300",
+  };
+
+  const bodyArr = [...dataArr, dymmy];
+
   const browser = await puppeteer.launch({
     args: [
       "--disable-setuid-sandbox",
@@ -43,7 +51,11 @@ async function createMultipagePdf(bodyArr, res) {
 }
 
 function getFilledTemplate(body) {
-  const { productName, ingredients, instructions, productImg } = body;
+  const { productName, ingredients, instructions } = body;
+  let { productImg } = body;
+  if (!productImg) {
+    productImg = "https://picsum.photos/300";
+  }
   const html = `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -149,7 +161,7 @@ function getFilledTemplate(body) {
               alt=""
             />
             <div class="meal">
-              <h2 class="meal-heading">$${productName}</h2>
+              <h2 class="meal-heading">${productName}</h2>
               <p class="meal-content">
                 15 minutes Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 Nulla fringilla lectus eget nibh accumsan scelerisque. Sed nec metus
