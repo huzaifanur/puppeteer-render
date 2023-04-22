@@ -6,26 +6,26 @@ async function createMultipagePdf(dataArr, res) {
   var merger = new PDFMerger();
   const bodyArr = dataArr;
   // browser launch
+  const browser = await puppeteer.launch({
+    args: [
+      "--disable-setuid-sandbox",
+      "--no-sandbox",
+      "--single-process",
+      "--no-zygote",
+    ],
+    executablePath:
+      process.env.NODE_ENV === "production"
+        ? process.env.PUPPETEER_EXECUTABLE_PATH
+        : puppeteer.executablePath(),
+  });
+  const page = await browser.newPage();
+  await page.emulateMediaType("screen");
+  await page.setViewport({
+    width: 1200,
+    height: 800,
+    deviceScaleFactor: 2,
+  });
   try {
-    const browser = await puppeteer.launch({
-      args: [
-        "--disable-setuid-sandbox",
-        "--no-sandbox",
-        "--single-process",
-        "--no-zygote",
-      ],
-      executablePath:
-        process.env.NODE_ENV === "production"
-          ? process.env.PUPPETEER_EXECUTABLE_PATH
-          : puppeteer.executablePath(),
-    });
-    const page = await browser.newPage();
-    await page.emulateMediaType("screen");
-    await page.setViewport({
-      width: 1200,
-      height: 800,
-      deviceScaleFactor: 2,
-    });
     const pdfPromises = bodyArr.map(async (body) => {
       const html = getFilledTemplate(body);
       await page.setContent(html);
