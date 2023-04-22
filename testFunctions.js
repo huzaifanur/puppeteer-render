@@ -26,10 +26,10 @@ async function createMultipagePdf(dataArr, res) {
   });
   var merger = new PDFMerger();
   try {
+    const page = await browser.newPage();
     for (let i = 0; i < bodyArr.length; i++) {
       const body = bodyArr[i];
       const html = getFilledTemplate(body);
-      const page = await browser.newPage();
       await page.setContent(html);
       await page.emulateMediaType("screen");
       await page.setViewport({
