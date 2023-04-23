@@ -1,10 +1,9 @@
 const puppeteer = require("puppeteer");
 require("dotenv").config();
-const PDFMerger = require("pdf-merger-js");
+const { merge } = require("merge-pdf-buffers");
 
 async function createMultipagePdf(dataArr, res) {
-  var merger = new PDFMerger();
-  const bodyArr = [...dataArr, "this is just a hot fix"];
+  const htmlArr = dataArr.map((body) => getFilledTemplate(body));
   // browser launch
   const browser = await puppeteer.launch({
     args: [
@@ -26,14 +25,11 @@ async function createMultipagePdf(dataArr, res) {
     deviceScaleFactor: 2,
   });
   try {
-    for (let i = 0; i < bodyArr.length; i++) {
-      const body = bodyArr[i];
-      const html = getFilledTemplate(body);
-      await page.setContent(html);
-      // wait a sec
-      await page.waitForTimeout(1000);
+    const pages = [];
+    for (let i = 0; i < htmlArr.length; i++) {
+      await page.setContent(htmlArr[i]);
       // Letter: 8.5in x 11in
-      merger.add(
+      pages.push(
         await page.pdf({
           printBackground: true,
           height: "12in",
@@ -41,9 +37,9 @@ async function createMultipagePdf(dataArr, res) {
         })
       );
     }
-    const mergedPdfBuffer = await merger.saveAsBuffer();
+    const merged = await merge(pages);
     res.type("pdf");
-    res.send(mergedPdfBuffer);
+    res.send(merged);
   } catch (e) {
     console.error(e);
     res.status(500).send("Something went wrong");
@@ -54,7 +50,8 @@ async function createMultipagePdf(dataArr, res) {
 
 function getFilledTemplate(body) {
   const { productName, ingredients, instructions } = body;
-  let productImg = "https://picsum.photos/400";
+  //let productImg = "https://picsum.photos/400";
+  let productImg = "";
 
   const html = `<!DOCTYPE html>
     <html lang="en">
@@ -90,6 +87,8 @@ function getFilledTemplate(body) {
         img {
           object-fit: cover;
           width: 100%;
+          aspect-ratio: 1 / 1;
+          
         }
         h2 {
           margin-bottom: 16px;

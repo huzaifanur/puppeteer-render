@@ -2,6 +2,7 @@ const express = require("express");
 const { createPdf } = require("./createPdf");
 const { createMultipagePdf } = require("./testFunctions");
 const app = express();
+const { Game } = require("./test");
 app.use(express.json());
 
 const PORT = process.env.PORT || 4000;
