@@ -49,7 +49,7 @@ async function createMultipagePdf(dataArr, res) {
 }
 
 function getFilledTemplate(body) {
-  const { productName, ingredients, instructions } = body;
+  const { productName, ingredients, instructions, nutritionInfo } = body;
   let { productImg } = body;
   // TODO :  Make sure that file is small
   if (1) {
@@ -166,11 +166,7 @@ function getFilledTemplate(body) {
             <div class="meal">
               <h2 class="meal-heading">${productName}</h2>
               <p class="meal-content">
-                15 minutes Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Nulla fringilla lectus eget nibh accumsan scelerisque. Sed nec metus
-                et tellus dignissim egestas quis vel erat. Vestibulum vel facilisis
-                ex. Sed semper neque nec hendrerit vestibulum. Etiam ut turpis nec
-                nibh consectetur ullamcorper.
+                ${nutritionInfo}
               </p>
             </div>
           </div>
